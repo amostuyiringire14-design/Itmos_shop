@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ITmos Shop</title>
+
+<style>
+body{margin:0;font-family:Arial;background:#eef2f7;padding-top:60px;}
+header{position:fixed;top:0;left:0;width:100%;background:#0f172a;color:white;text-align:center;padding:12px;}
+
+.box{width:320px;margin:60px auto;background:white;padding:20px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+input{width:100%;padding:10px;margin:6px 0;border-radius:6px;border:1px solid #ddd;}
+button{width:100%;padding:10px;border:none;border-radius:6px;cursor:pointer;}
+.primary{background:#2563eb;color:white;}
+
+#app{display:none;}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px;padding:20px;}
+
+.card{background:white;border-radius:12px;box-shadow:0 3px 10px rgba(0,0,0,0.1);text-align:center;}
+.card img{width:100%;height:150px;object-fit:cover;}
+.price{color:green;font-weight:bold;}
+
+</style>
+</head>
+
+<body>
+
+<header>🏪 ITmos Shop</header>
+
+<!-- LOGIN -->
+<div class="box" id="loginBox">
+<h3>Login</h3>
+
+<input id="name" placeholder="Full Name">
+<input id="pass" type="password" placeholder="Password">
+
+<button class="primary" onclick="login()">Login</button>
+
+</div>
+<div id="app">
+<h2 style="text-align:center;">🛒 ITmos Shop Products</h2>
+<div class="grid" id="productList"></div>
+</div>
+
+<script>
+
+/* =======================
+   PRODUCTS (150+)
+======================= */
+
+const products = [];
+
+const names = [
+"👟 Nike Shoes","👟 Adidas Shoes","👞 Classic Shoes",
+"🧦 Socks","👕 T-Shirt","👖 Jeans","👗 Dress",
+"🧥 Jacket","👜 Bag","⌚ Watch",
+"📱 Phone","💻 Laptop","🎧 Headphones",
+"🕶️ Sunglasses","💄 Perfume","🧴 Cream",
+"🧢 Cap","👒 Hat","🔧 Tools"
+];
+
+const images = [
+"https://images.unsplash.com/photo-1523275335684-37898b6baf30",
+"https://images.unsplash.com/photo-1520975916090-3105956dac38",
+"https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3",
+"https://images.unsplash.com/photo-1586864387967-d02ef85d93e8",
+"https://images.unsplash.com/photo-1513708927688-890fe0f8a3d2"
+];
+
+for(let i=1;i<=150;i++){
+let n = names[Math.floor(Math.random()*names.length)];
+let img = images[Math.floor(Math.random()*images.length)];
+
+products.push({
+name: n + " " + i,
+price: Math.floor(Math.random()*90000)+10000,
+img: img
+});
+}
+
+/* =======================
+   LOAD PRODUCTS
+======================= */
+
+function loadProducts(list = products){
+let box = document.getElementById("productList");
+box.innerHTML="";
+
+list.forEach(p=>{
+box.innerHTML += `
+<div class="card">
+<img src="${p.img}">
+<h4>${p.name}</h4>
+<div class="price">${p.price} RWF</div>
+</div>
+`;
+});
+}
+
+/* =======================
+   SEARCH FUNCTION
+======================= */
+
+function searchProducts(){
+
+let input = document.getElementById("searchInput");
+let value = input.value.toLowerCase();
+
+let filtered = products.filter(p =>
+p.name.toLowerCase().includes(value)
+);
+
+// niba empty → show all
+if(value === ""){
+loadProducts(products);
+return;
+}
+
+loadProducts(filtered);
+}
+
+/* =======================
+   LOGIN
+======================= */
+
+function login(){
+
+let name = document.getElementById("name").value.trim();
+let pass = document.getElementById("pass").value.trim();
+
+if(!name || !pass){
+alert("❌ Fill all fields");
+return;
+}
+
+document.getElementById("loginBox").style.display="none";
+document.getElementById("app").style.display="block";
+
+loadProducts();
+
+alert("✅ Welcome " + name);
+}
+
+</script>
+
+</body>
+</html>
